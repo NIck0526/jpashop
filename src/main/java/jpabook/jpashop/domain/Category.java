@@ -1,6 +1,6 @@
-package jpabook.domain;
+package jpabook.jpashop.domain;
 
-import jpabook.domain.item.Item;
+import jpabook.jpashop.domain.item.Item;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -34,4 +34,10 @@ public class Category {
 
     @OneToMany(mappedBy = "parent")
     private List<Category> child = new ArrayList<>();
+
+    /* 연관관계 메서드 */
+    public void addchildCategory(Category child) {
+        this.child.add(child);
+        child.setParent(this);
+    }
 }

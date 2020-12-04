@@ -1,4 +1,4 @@
-package jpabook.domain;
+package jpabook.jpashop.domain;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,11 +15,13 @@ public class Member {
     @GeneratedValue
     @Column(name = "member_id")
     private Long id;
-    private String username;
+    private String name;
 
     @Embedded
     private Address address;
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
     private List<Order> orders = new ArrayList<>();
+
+
 }
