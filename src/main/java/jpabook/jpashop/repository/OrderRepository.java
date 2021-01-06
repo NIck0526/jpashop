@@ -111,6 +111,28 @@ public class OrderRepository {
         ).getResultList();
     }
 
+    public List<Order> findAllWithItem() {
+        /* JPA의 distinct 는 가져오는 테이블(root or entity)  값이 같다면(Order) DB에서 가져온 값을 중복 제거해줌
+            (그리하여 DB에 직접 날린 쿼리랑은 결과가 다름 -- 결과값 컬럼이 모두 같은경우에만 중복제거해줌)*/
+        return em.createQuery(
+                "select distinct o from Order o" +
+                        " join fetch o.member m " +
+                        " join fetch o.delivery d" +
+                        " join fetch o.orderItems oi" +
+                        " join fetch oi.item i", Order.class)
+                .getResultList();
+    }
+
+    public List<Order> findAllWithMemberDelivery(int offset, int limit) {
+        return em.createQuery(
+                "select o from Order o" +
+                        " join fetch o.member m" +
+                        " join fetch o.delivery d", Order.class)
+                    .setFirstResult(offset)
+                    .setMaxResults(limit)
+                    .getResultList();
+    }
+
     /**
      * Querydsl
      */
