@@ -83,7 +83,7 @@ public class OrderSimpleApiController {
             orderId = order.getId();
             name = order.getMember().getName(); //LAZY 초기화 (영속성 컨테스트에서 없으면 DB를 날림)
             orderDate = order.getOrderDate();
-            orderStatus = order.getOrderStatus();
+            orderStatus = order.getStatus();
             address = order.getDelivery().getAddress(); //LAZY 초기화
 
         }

@@ -1,6 +1,8 @@
 package jpabook.jpashop.domain;
 
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.BatchSize;
 
@@ -13,6 +15,7 @@ import java.util.List;
 @Table(name = "orders")
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order {
 
     @Id
@@ -36,7 +39,7 @@ public class Order {
      * persist(order)
      * order만 하면 cascade ALL인 것도 영속성에 추가됨
      * */
-    @BatchSize(size = 1000)
+//    @BatchSize(size = 1000)
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL) //cascade
     private List<OrderItem> orderItems = new ArrayList<>();
 
@@ -47,7 +50,7 @@ public class Order {
     private LocalDateTime orderDate;
 
     @Enumerated(EnumType.STRING)
-    private OrderStatus orderStatus; //주문사태 [ORDER, CANCEL]
+    private OrderStatus status; //주문사태 [ORDER, CANCEL]
 
     /* 연관관계 메서드 */
     public void setMember(Member member) {
@@ -74,7 +77,7 @@ public class Order {
             order.addOrderItem(orderItem);
         }
 
-        order.setOrderStatus(OrderStatus.ORDER);
+        order.setStatus(OrderStatus.ORDER);
         order.setOrderDate(LocalDateTime.now());
         return order;
     }
@@ -88,7 +91,7 @@ public class Order {
         if (delivery.getStatus() == DeliveryStatus.COMP) {
             throw new IllegalStateException("이미 배송완료 된 상품은 취소가 불가능합니다.");
         }
-        this.setOrderStatus(OrderStatus.CANCEL);
+        this.setStatus(OrderStatus.CANCEL);
         for (OrderItem orderItem : orderItems) {
             orderItem.cancel();
         }

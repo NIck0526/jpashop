@@ -10,8 +10,8 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
+@Getter @Setter
+@Table(name = "order_item")
 @NoArgsConstructor(access = AccessLevel.PROTECTED) /* 엔터티 객체를 생성한 뒤 setter를 독립적으로 생성못하게 막음 (createOrderItem)과 같이 메서드 생성하여 사용*/
 public class OrderItem {
 
@@ -24,7 +24,6 @@ public class OrderItem {
     @JoinColumn(name = "item_id")
     private Item item;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
